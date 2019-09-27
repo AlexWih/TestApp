@@ -6,7 +6,9 @@ import baz.bar.foo.textrecodemo.SymbolRecogniser
 typealias CalculationSignatureAlgorithm = (SymbolMatrix) -> String
 
 class ScanningSignatureRecogniser(
-    private val signatureRegistry: Map<String, List<Char>>, //not good as algorithm is specified separately from registry!
+    private val signatureRegistry: Map<String, List<Char>> = mapOf(
+        Pair("", listOf('a'))
+    ),
     private val calculationSignatureAlgorithm: CalculationSignatureAlgorithm
 ) : SymbolRecogniser {
     override fun recognise(source: SymbolMatrix): List<Char> {
