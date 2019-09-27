@@ -7,7 +7,7 @@ typealias CalculationSignatureAlgorithm = (SymbolMatrix) -> String
 
 class ScanningSignatureRecogniser(
     private val signatureRegistry: Map<String, List<Char>> = mapOf(
-        Pair("", listOf('a'))
+        Pair("121", listOf('A'))
     ),
     private val calculationSignatureAlgorithm: CalculationSignatureAlgorithm
 ) : SymbolRecogniser {
