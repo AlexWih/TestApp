@@ -30,7 +30,6 @@ class SimpleOpticalCharacterRecognition(
         }
     }
 
-
     // returns the most probable character!
     private fun recogniseSymbol(symbolMatrix: SymbolMatrix): Char? {
         val matchCounters = mutableMapOf<Char, Int>()
