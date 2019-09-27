@@ -1,6 +1,6 @@
 package baz.bar.foo.textrecodemo
 
-typealias SymbolMatrix = Array<IntArray>
+typealias SymbolMatrix = Array<CharArray> // asterixes and whitespaces for now.
 
 interface OpticalCharacterRecognition {
     fun recogniseText(source: String): String
@@ -13,11 +13,11 @@ interface OpticalCharacterRecognition {
     )
 }*/
 interface SymbolRecogniser {
-    fun recognise(source: Array<IntArray>): List<Char> // may be return possibility as well?
+    fun recognise(source: SymbolMatrix): List<Char>
 }
 
 interface SymbolSplitter {
-    fun split(source: Array<IntArray>): List<SymbolMatrix>
+    fun split(source: Array<CharArray>): List<SymbolMatrix>
 }
 
 class SimpleOpticalCharacterRecognition(
@@ -38,14 +38,32 @@ class SimpleOpticalCharacterRecognition(
         }
     }
 
-    private fun prepareSourceArray(source: String): Array<IntArray> {
-
+    private fun prepareSourceArray(source: String): Array<CharArray> {
+        val rows = source.split("\n")
+        return Array(rows.size) {
+            rows[it].toCharArray()
+        }
     }
 
 
     // returns the most probable character!
     private fun recogniseSymbol(symbolMatrix: SymbolMatrix): Char? {
+        val matchCounters = mutableMapOf<Char, Int>()
+        for (recogniser in recognisers) {
+            val recognitionResults = recogniser.recognise(symbolMatrix)
+            if (recognitionResults.size == 1) {
+                //100% match
+                return recognitionResults[0]
+            }
+            for (symbol in recognitionResults) {
+                var counter = matchCounters[symbol] ?: 0
+                matchCounters[symbol] = ++counter
 
+            }
+        }
+        return matchCounters.maxWith(Comparator { entry: Map.Entry<Char, Int>, entry1: Map.Entry<Char, Int> ->
+            entry.value - entry1.value
+        })?.key
     }
 
 }
